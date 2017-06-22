@@ -2,6 +2,7 @@
 using UnityEditor;
 using NUnit.Framework;
 using System.Collections.Generic;
+using System;
 
 public class TestsDeCajaBlanca{
 
@@ -109,6 +110,8 @@ public class TestsDeCajaBlanca{
         monsterAttack.AttemptAttack();
 
         string actualValue = monsterAttack.multiPlayerManager.btPackage.packageType;
+
+        //result
         Assert.AreEqual(expectedValue, actualValue);
     }
     [Test]
@@ -128,6 +131,30 @@ public class TestsDeCajaBlanca{
         monsterAttack.playerHandager.createPlayers();//creamos player y enemy
         monsterAttack.playerHandager.getEnemy().magicAndTrapCards = magicAndTrapCards;
         bool actualValue = monsterAttack.playerHandager.getEnemy().HasTrapCards();//get DuelistPlayer de enmigo y seteamos sus cartas magicas y trampas
+
+        //result
+        Assert.AreEqual(expectedValue, actualValue);
+    }
+    [Test]
+    public void TestTrapEffect()
+    {
+        MonsterCard monsterCard = new MonsterCard(1, null, null, null, 200, 1, 1, null);
+        GameCard gameCard = new GameCard(null, null, monsterCard, null, 3);//3 para q entre en la linea 69: "This card is not trap"
+
+        //expected value
+        int expectedValue = gameCard.type;
+        
+        //actual value
+        TrapEffect trapEffect = new TrapEffect();
+        trapEffect.effectCard = gameCard;
+        trapEffect.popupManager = new PopupManager();//Se requiere en el metodo checktrapcardset, sino dara error x null
+        trapEffect.popupManager.QuickPopup = new GameObject();
+        trapEffect.popupManager.DuelCanvas = new GameObject();
+        trapEffect.popupManager.QuickPopup.AddComponent<UnityEngine.UI.Text>();
+        trapEffect.CheckTrapCardSet(gameCard);
+        int actualValue = trapEffect.effectCard.type;
+
+        //result
         Assert.AreEqual(expectedValue, actualValue);
     }
 }
