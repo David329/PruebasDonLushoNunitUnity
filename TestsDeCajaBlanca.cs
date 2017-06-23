@@ -185,4 +185,31 @@ public class TestsDeCajaBlanca{
         //result
         Assert.AreEqual(expectedValue, actualValue);
     }
+    [Test]
+    public void MagicEffect()
+    {
+        //expectedValue
+        MonsterCard monsterCard = new MonsterCard(1, null, null, null, 200, 1, 1, null);
+        GameCard expectedValue = new GameCard(new GameObject("123123123123"), null, monsterCard, null, 3);//Necesitamos un Marker pz; 3 para q entre en la linea 69: "This card is not trap"
+
+        //actualValue
+        MagicEffect magicEffect = new MagicEffect();
+        magicEffect.playerHandager = new PlayerHandager();
+        magicEffect.playerHandager.createPlayers();
+        magicEffect.playerHandager.multiplayerManager = new MultiPlayerManager();
+        magicEffect.playerHandager.multiplayerManager.btPackage = new BTPackage();
+        magicEffect.playerHandager.multiplayerManager.btSettings = new BTsettings();
+        magicEffect.playerHandager.popupManager = new PopupManager();
+        magicEffect.playerHandager.popupManager.DuelCanvas = new GameObject();//Se necesita en el metodo ShowQuickPopupMessage de PopupManager
+        magicEffect.playerHandager.popupManager.QuickPopup = new GameObject();
+        magicEffect.playerHandager.popupManager.QuickPopup.AddComponent<UnityEngine.UI.Text>();
+        magicEffect.effectCard = expectedValue;
+        magicEffect.playerHandager.getPlayer().magicAndTrapCards = new List<GameCard>();
+        magicEffect.SetMagicCard();
+
+        GameCard actualValue = magicEffect.playerHandager.getPlayer().magicAndTrapCards[0];
+
+        //result
+        Assert.AreEqual(expectedValue, actualValue);
+    }
 }
