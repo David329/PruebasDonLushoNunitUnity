@@ -157,4 +157,32 @@ public class TestsDeCajaBlanca{
         //result
         Assert.AreEqual(expectedValue, actualValue);
     }
+    [Test]
+    public void MonsterEffect()
+    {
+        UnityEngine.UI.Text newText = (new GameObject().AddComponent<UnityEngine.UI.Text>()).GetComponent<UnityEngine.UI.Text>();//no se puede instanciar un Text, me tira muchos errores como nivel de proteccion de Text de unity, asi q encontre esta formula... ojala funke...
+        UnityEngine.UI.Button newButton = (new GameObject().AddComponent<UnityEngine.UI.Button>()).GetComponent<UnityEngine.UI.Button>();//no se puede instanciar un Button, me tira muchos errores como nivel de proteccion de Button de unity, asi q encontre esta formula... ojala funke...
+
+        MonsterCard monsterCard = new MonsterCard(1, null, null, null, 200, 1, 1, null);
+        GameCard gameCard = new GameCard(null, null, monsterCard, null, 2);//2 para q entre en la linea 69: "This card is not trap"
+        MonsterEffect monsterEffect = new MonsterEffect();
+        monsterEffect.popupManager = new PopupManager();
+        monsterEffect.popupManager.popupPanelObject = new GameObject();
+        monsterEffect.popupManager.okButtonText = newText;//solo sirve para instanciar y no se kede en null
+        monsterEffect.popupManager.okButton = newButton;
+        monsterEffect.popupManager.noButtonText = newText;
+        monsterEffect.popupManager.noButton = newButton;
+        monsterEffect.popupManager.message = newText;
+        monsterEffect.popupManager.cancelButton = newButton;
+
+        //expectedValue
+        string expectedValue = "Do yo wish to activate  effect?";
+
+        //actualValue
+        monsterEffect.CheckIfEffectIsTriggered(gameCard, 0);//0 para q sea trigger el efecctGameCard, xq en el constructor del MonsterCard se asigna 0 a TriggerId, revisar linea 31 de MonsterEffect
+        string actualValue = monsterEffect.popupManager.message.text;
+
+        //result
+        Assert.AreEqual(expectedValue, actualValue);
+    }
 }
